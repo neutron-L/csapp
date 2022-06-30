@@ -1,0 +1,114 @@
+0x000:                      | .pos 0
+0x000: 30f40004000000000000 | 	irmovq stack, %rsp
+0x00a: 805800000000000000   | 	call main
+0x013: 00                   | 	halt
+                            | 	
+0x018:                      | .align 8
+0x018:                      | array:
+0x018: 0000000000000000     | 	.quad 0x0000
+0x020: 0000000000000000     | 	.quad 0x0000
+0x028: 0000000000000000     | 	.quad 0x0000
+0x030: 0000000000000000     | 	.quad 0x0000
+0x038: 0000000000000000     | 	.quad 0x0000
+0x040: 0000000000000000     | 	.quad 0x0000
+0x048: 0000000000000000     | 	.quad 0x0000
+0x050: 0000000000000000     | 	.quad 0x0000
+0x058:                      | main:
+0x058: 30fc1800000000000000 | 	irmovq array, %r12
+                            | 	
+0x062: 30f70000000000000000 | 	irmovq $0, %rdi
+0x06c: 809b01000000000000   | 	call switchv
+0x075: 400c0000000000000000 | 	rmmovq %rax, (%r12)
+                            | 	
+0x07f: 30f70100000000000000 | 	irmovq $1, %rdi
+0x089: 809b01000000000000   | 	call switchv
+0x092: 400c0800000000000000 | 	rmmovq %rax, 8(%r12)
+                            | 	
+0x09c: 30f70200000000000000 | 	irmovq $2, %rdi
+0x0a6: 809b01000000000000   | 	call switchv
+0x0af: 400c1000000000000000 | 	rmmovq %rax, 16(%r12)
+                            | 	
+0x0b9: 30f70300000000000000 | 	irmovq $3, %rdi
+0x0c3: 809b01000000000000   | 	call switchv
+0x0cc: 400c1800000000000000 | 	rmmovq %rax, 24(%r12)
+                            | 	
+0x0d6: 30f70400000000000000 | 	irmovq $4, %rdi
+0x0e0: 809b01000000000000   | 	call switchv
+0x0e9: 400c2000000000000000 | 	rmmovq %rax, 32(%r12)
+                            | 	
+0x0f3: 30f70500000000000000 | 	irmovq $5, %rdi
+0x0fd: 809b01000000000000   | 	call switchv
+0x106: 400c2800000000000000 | 	rmmovq %rax, 40(%r12)
+                            | 	
+0x110: 30f70600000000000000 | 	irmovq $6, %rdi
+0x11a: 809b01000000000000   | 	call switchv
+0x123: 400c3000000000000000 | 	rmmovq %rax, 48(%r12)
+                            | 	
+0x12d: 30f70700000000000000 | 	irmovq $7, %rdi
+0x137: 809b01000000000000   | 	call switchv
+0x140: 400c3800000000000000 | 	rmmovq %rax, 56(%r12)
+                            | 	
+0x14a: 90                   | 	ret
+                            | 	
+0x14b:                      | table:
+0x14b: 0b02000000000000     | 	.quad L0
+0x153: 2c02000000000000     | 	.quad LD
+0x15b: 2102000000000000     | 	.quad L5
+0x163: 1602000000000000     | 	.quad L3
+0x16b: 2c02000000000000     | 	.quad LD
+0x173: 2102000000000000     | 	.quad L5
+0x17b: 2c02000000000000     | 	.quad LD
+0x183: 2c02000000000000     | 	.quad LD
+0x18b: 2c02000000000000     | 	.quad LD
+0x193: 2c02000000000000     | 	.quad LD
+                            | 	
+0x19b:                      | switchv:
+0x19b: 30f80800000000000000 | 	irmovq $8, %r8
+0x1a5: 30fa0000000000000000 | 	irmovq $0, %r10
+0x1af: 30fb0100000000000000 | 	irmovq $1, %r11
+                            | 	
+0x1b9: 30f14b01000000000000 | 	irmovq table, %rcx
+                            | 	
+                            | 	# if idx > 0
+0x1c3: 2073                 | 	rrmovq %rdi, %rbx
+0x1c5: 6183                 | 	subq %r8, %rbx
+0x1c7: 75f301000000000000   | 	jge def
+                            | 	# if idx < 0
+0x1d0: 61a7                 | 	subq %r10, %rdi
+0x1d2: 72f301000000000000   | 	jl def 
+                            | 	
+0x1db:                      | mul:
+0x1db: 61a7                 | 	subq %r10, %rdi
+0x1dd: 73fe01000000000000   | 	je switch
+0x1e6: 6081                 | 	addq %r8, %rcx
+0x1e8: 61b7                 | 	subq %r11, %rdi
+0x1ea: 70db01000000000000   | 	jmp mul
+                            | 	
+0x1f3:                      | def:
+0x1f3: 2087                 | 	rrmovq %r8, %rdi
+0x1f5: 70db01000000000000   | 	jmp mul
+                            | 	
+0x1fe:                      | switch:
+0x1fe: 50310000000000000000 | 	mrmovq (%rcx), %rbx
+0x208: a03f                 | 	pushq %rbx
+0x20a: 90                   | 	ret
+                            | 	
+0x20b:                      | L0:
+0x20b: 30f0aa0a000000000000 | 	irmovq 0xaaa, %rax
+0x215: 90                   | 	ret
+                            | 
+0x216:                      | L3:
+0x216: 30f0cc0c000000000000 | 	irmovq 0xccc, %rax
+0x220: 90                   | 	ret
+                            | 
+0x221:                      | L5:
+0x221: 30f0bb0b000000000000 | 	irmovq 0xbbb, %rax
+0x22b: 90                   | 	ret
+0x22c:                      | LD:
+0x22c: 30f0dd0d000000000000 | 	irmovq 0xddd, %rax
+0x236: 90                   | 	ret
+                            | 
+                            | 
+0x400:                      | .pos 0x400
+0x400:                      | stack:
+                            | 	

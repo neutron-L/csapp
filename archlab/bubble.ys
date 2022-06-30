@@ -1,0 +1,71 @@
+# Sample linked list
+
+.pos 0
+	irmovq stack, %rsp
+	call main
+	halt
+
+.align 8
+data:
+	.quad 0x006
+	.quad 0x001
+	.quad 0x004
+	.quad 0x002
+	.quad 0x003
+	.quad 0x005
+	
+main:
+	irmovq data, %rdi
+	irmovq 48, %rsi
+	call bubble_a
+	ret
+
+# %r10 used for temp
+bubble_a:
+	irmovq $8, %r8
+	irmovq $1, %r9
+	subq %r8, %rsi
+	rrmovq %rdi, %rdx
+	addq %rsi, %rdx # end = data + count - 1
+	rrmovq %rdx, %r10
+	subq %rdi, %r10 # if end <= data return
+	jle done1
+	
+loop1:
+	rrmovq %rdi, %rbx # start = data
+	rrmovq %rbx, %r10
+	subq %rdx, %r10
+	jge test1
+	
+loop2:
+	mrmovq 8(%rbx), %r11 # *(start + 1)
+	mrmovq (%rbx), %r12 # *start
+	rrmovq %r11, %r10
+	xorq %r13, %r13
+	subq %r12, %r10 # *(start + 1) - *start
+	cmovg %r13, %r10
+	subq %r10, %r11
+	addq %r10, %r12
+	rmmovq %r11, 8(%rbx)
+	rmmovq %r12, (%rbx) 
+	
+	
+test2:
+	addq %r8, %rbx
+	rrmovq %rbx, %r10
+	subq %rdx, %r10
+	jl loop2
+	
+	
+test1:
+	subq %r8, %rdx
+	rrmovq %rdx, %r10
+	subq %rdi, %r10
+	jg loop1    # if end > data goto loop1
+done1:
+	ret
+	
+
+
+.pos 0x200
+stack:

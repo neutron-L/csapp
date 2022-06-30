@@ -1,0 +1,144 @@
+#/* $begin ncopy-ys */
+##################################################################
+# ncopy.ys - Copy a src block of len words to dst.
+# Return the number of positive words (>0) contained in src.
+#
+# Include your name and ID here.
+#
+# Describe how and why you modified the baseline code.
+#
+##################################################################
+# Do not modify this portion
+# Function prologue.
+# %rdi = src, %rsi = dst, %rdx = len
+ncopy:
+
+##################################################################
+# You can modify this portion
+	# Loop header
+	xorq %rax,%rax		# count = 0;
+	andq %rdx,%rdx		# len <= 0?
+	jle Done
+	iaddq $-6, %rdx
+	jge Loop6
+	iaddq $3, %rdx
+	jge Loop3
+	iaddq $3, %rdx
+	
+
+Loop:	
+	mrmovq (%rdi), %r10	# read val from src...
+	rrmovq %rax, %r8
+	iaddq $1, %r8
+	andq %r10, %r10        # val <= 0?
+	cmovg %r8, %rax
+	rmmovq %r10, (%rsi)	# ...and store it to dst
+	
+	iaddq $8, %rdi		# src++
+	iaddq $8, %rsi		# dst++
+	iaddq $-1, %rdx	# len--
+	
+	jg Loop			# if so, goto Loop:
+	ret
+
+	
+Loop3:
+	mrmovq (%rdi), %r10	# read val from src...
+	rrmovq %rax, %r8
+	iaddq $1, %r8
+	andq %r10, %r10        # val <= 0?
+	cmovg %r8, %rax
+	rmmovq %r10, (%rsi)	# ...and store it to dst
+	
+	mrmovq 8(%rdi), %r10	# read val from src...
+	rrmovq %rax, %r8
+	iaddq $1, %r8
+	andq %r10, %r10        # val <= 0?
+	cmovg %r8, %rax
+	rmmovq %r10, 8(%rsi)	# ...and store it to dst
+	
+	
+	mrmovq 16(%rdi), %r10	# read val from src...
+	rrmovq %rax, %r8
+	iaddq $1, %r8
+	andq %r10, %r10        # val <= 0?
+	cmovg %r8, %rax
+	rmmovq %r10, 16(%rsi)  # ...and store it to dst
+	
+	
+	iaddq $24, %rdi
+	iaddq $24, %rsi
+	iaddq $-3, %rdx	# len--
+	
+	jge Loop3		# if so, goto Loop:
+	iaddq $3, %rdx
+	jg Loop
+	ret
+
+	
+Loop6:
+	mrmovq (%rdi), %r10	# read val from src...
+	rrmovq %rax, %r8
+	iaddq $1, %r8
+	andq %r10, %r10        # val <= 0?
+	cmovg %r8, %rax
+	rmmovq %r10, (%rsi)	# ...and store it to dst
+	
+	mrmovq 8(%rdi), %r10	# read val from src...
+	rrmovq %rax, %r9
+	iaddq $1, %r9
+	andq %r10, %r10        # val <= 0?
+	cmovg %r9, %rax
+	rmmovq %r10, 8(%rsi)	# ...and store it to dst
+	
+	mrmovq 16(%rdi), %r10	# read val from src...
+	rrmovq %rax, %r11
+	iaddq $1, %r11
+	andq %r10, %r10        # val <= 0?
+	cmovg %r11, %rax
+	rmmovq %r10, 16(%rsi)  # ...and store it to dst
+	
+	mrmovq 24(%rdi), %r10	# read val from src...
+	rrmovq %rax, %r12
+	iaddq $1, %r12
+	andq %r10, %r10        # val <= 0?
+	cmovg %r12, %rax
+	rmmovq %r10, 24(%rsi)	# ...and store it to dst
+	
+	mrmovq 32(%rdi), %r10	# read val from src...
+	rrmovq %rax, %r13
+	iaddq $1, %r13
+	andq %r10, %r10        # val <= 0?
+	cmovg %r13, %rax
+	rmmovq %r10, 32(%rsi)	# ...and store it to dst
+	
+	mrmovq 40(%rdi), %r10	# read val from src...
+	rrmovq %rax, %r8
+	iaddq $1, %r8
+	andq %r10, %r10        # val <= 0?
+	cmovg %r8, %rax
+	rmmovq %r10, 40(%rsi)  # ...and store it to dst
+	
+	iaddq $48, %rdi
+	iaddq $48, %rsi
+	iaddq $-6, %rdx	# len--
+	
+	jge Loop6		# if so, goto Loop:
+	iaddq $3, %rdx
+	jge Loop3
+	iaddq $3, %rdx
+	jg Loop
+
+
+
+
+
+##################################################################
+# Do not modify the following section of code
+# Function epilogue.
+Done:
+	ret
+##################################################################
+# Keep the following label at the end of your function
+End:
+#/* $end ncopy-ys */
