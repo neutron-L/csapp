@@ -1,0 +1,21 @@
+./sdriver.pl -t trace12.txt -s ./tshref -a "-p"
+#
+# trace12.txt - Forward SIGTSTP to every process in foreground process group
+#
+tsh> ./mysplit 4
+Job [1] (83251) stopped by signal 20
+tsh> jobs
+[1] (83251) Stopped ./mysplit 4 
+tsh> /bin/ps a
+    PID TTY      STAT   TIME COMMAND
+   1515 tty2     Ssl+   0:00 /usr/lib/gdm3/gdm-x-session --run-script env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu
+   1526 tty2     Sl+   25:37 /usr/lib/xorg/Xorg vt2 -displayfd 3 -auth /run/user/1000/gdm/Xauthority -background none -noreset -keeptty -verbose 3
+   1561 tty2     Sl+    0:00 /usr/libexec/gnome-session-binary --systemd --systemd --session=ubuntu
+  65499 pts/3    Ss     0:01 zsh
+  83246 pts/3    S+     0:00 make rtest12
+  83247 pts/3    S+     0:00 /bin/sh -c ./sdriver.pl -t trace12.txt -s ./tshref -a "-p"
+  83248 pts/3    S+     0:00 /usr/bin/perl ./sdriver.pl -t trace12.txt -s ./tshref -a -p
+  83249 pts/3    S+     0:00 ./tshref -p
+  83251 pts/3    T      0:00 ./mysplit 4
+  83252 pts/3    T      0:00 ./mysplit 4
+  83255 pts/3    R      0:00 /bin/ps a
