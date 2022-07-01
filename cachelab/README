@@ -9,6 +9,8 @@ Before running the autograders, compile your code:
 
 Check the correctness of your simulator:
     linux> ./test-csim
+or
+    linux> bash test.sh
 
 Check the correctness and performance of your transpose functions:
     linux> ./test-trans -M 32 -N 32
