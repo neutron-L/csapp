@@ -440,7 +440,6 @@ void sigchld_handler(int sig)
             //     // Sio_putl(pid); 
             //     // Sio_puts(" terminates\n"); 
             //     printf("Job [%d] (%d) terminated by signal 2\n", pid2jid(pid), pid);
-            //     fflush(stdout);
             // }
             sigprocmask(SIG_BLOCK, &mask_all, &prev_all); 
             if (WIFEXITED(status))
