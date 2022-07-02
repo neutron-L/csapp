@@ -18,7 +18,7 @@ Successful completion (Is a file recovered from a previous virtual machine disk.
 complement part A
 
 **shlab**
-There are bugs that need to be modified
+completion(in test11 and test12, the output result of PS command is a little different)
 
 **malloclab**
 Successful completion
