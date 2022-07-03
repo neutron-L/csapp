@@ -193,8 +193,8 @@ void eval(char *cmdline)
             /* puts the child in a new process group whose group ID is identical to the
 child’s PID */
             setpgid(0, 0);
-            Signal(SIGINT,  SIG_DFL);   /* ctrl-c */
-            Signal(SIGTSTP, SIG_DFL);  /* ctrl-z */
+            // Signal(SIGINT,  SIG_DFL);   /* ctrl-c */
+            // Signal(SIGTSTP, SIG_DFL);  /* ctrl-z */
             if (execve(argv[0], argv, environ) < 0)
             {
                 printf("%s: Command not found.\n", argv[0]);
@@ -215,7 +215,9 @@ child’s PID */
             while (pid == fg_pid)
                 sigsuspend(&prev_one);
     
-            fg_pid = 0;
+            // fg_pid = 0;
+            /* Optional  unblock SIGCHLD */
+            sigprocmask(SIG_SETMASK, &prev_one, NULL);
         }
         else
             printf("[%d] (%d) %s\n", pid2jid(pid), pid,
